@@ -70,7 +70,7 @@ async function displayAlbums() {
 
     for (let folder of albums) {
         try {
-            let a = await fetch(`/Songs/${folder}/info.json`);
+            let a = await fetch(`Songs/${folder}/info.json`);
             let response = await a.json();
 
             cardContainer.innerHTML += `
