@@ -1,4 +1,9 @@
 {
-    "title": "Sleep Songs",
-    "description": "Songs for you"
+  "title": "NCS Album",
+  "description": "Best of NCS",
+  "songs": [
+    "C.R.E.A.M POSSE.mp3",
+    "DEVIL Lyrical Video.mp3",
+    "STFU.mp3"
+  ]
 }
