@@ -1,4 +1,5 @@
 console.log('Lets write JavaScript');
+
 let currentSong = new Audio();
 let songs;
 let currFolder;
@@ -12,6 +13,8 @@ function secondsToMinutesSeconds(seconds) {
 
 async function getSongs(folder) {
     currFolder = folder;
+    // Fetch the index.json or directory listing
+    // Here, you fetch the folder directly and parse the HTML for mp3 links
     let a = await fetch(`/Spotify-Clone/${folder}/`);
     let response = await a.text();
     let div = document.createElement("div");
@@ -69,33 +72,26 @@ const playMusic = (track, pause = false) => {
 
 async function displayAlbums() {
     console.log("displaying albums");
-    let a = await fetch(`/Spotify-Clone/Songs/`);
-    let response = await a.text();
-    let div = document.createElement("div");
-    div.innerHTML = response;
-    let anchors = div.getElementsByTagName("a");
-    let cardContainer = document.querySelector(".cardContainer");
-    let array = Array.from(anchors);
+    let a = await fetch(`/Spotify-Clone/Songs/index.json`);
+    let albums = await a.json();
 
-    for (let index = 0; index < array.length; index++) {
-        const e = array[index];
-        if (e.href.includes("/Songs") && !e.href.includes(".htaccess")) {
-            let folder = e.href.split("/").slice(-2)[0];
-            let a = await fetch(`/Spotify-Clone/Songs/${folder}/info.json`);
-            let response = await a.json();
-            cardContainer.innerHTML += `<div data-folder="${folder}" class="card">
-                <div class="play">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path d="M5 20V4L19 12L5 20Z" stroke="#141B34" fill="#000" stroke-width="1.5"
-                            stroke-linejoin="round" />
-                    </svg>
-                </div>
-                <img src="/Spotify-Clone/Songs/${folder}/cover.jpg" alt="">
-                <h2>${response.title}</h2>
-                <p>${response.description}</p>
-            </div>`;
-        }
+    let cardContainer = document.querySelector(".cardContainer");
+    cardContainer.innerHTML = "";
+
+    for (const album of albums) {
+        let folder = album.folder;
+        cardContainer.innerHTML += `<div data-folder="${folder}" class="card">
+            <div class="play">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 20V4L19 12L5 20Z" stroke="#141B34" fill="#000" stroke-width="1.5"
+                        stroke-linejoin="round" />
+                </svg>
+            </div>
+            <img src="/Spotify-Clone/Songs/${folder}/cover.jpg" alt="">
+            <h2>${album.title}</h2>
+            <p>${album.description}</p>
+        </div>`;
     }
 
     Array.from(document.getElementsByClassName("card")).forEach(e => {
