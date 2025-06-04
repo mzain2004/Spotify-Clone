@@ -14,12 +14,12 @@ function secondsToMinutesSeconds(seconds) {
     const formattedMinutes = String(minutes).padStart(2, '0');
     const formattedSeconds = String(remainingSeconds).padStart(2, '0');
 
-    return `${formattedMinutes}:${formattedSeconds}`;
+    return ${formattedMinutes}:${formattedSeconds};
 }
 
 async function getSongs(folder) {
     currFolder = folder;
-    let a = await fetch(`/${folder}/`)
+    let a = await fetch(/${folder}/)
     let response = await a.text();
     let div = document.createElement("div")
     div.innerHTML = response;
@@ -28,7 +28,7 @@ async function getSongs(folder) {
     for (let index = 0; index < as.length; index++) {
         const element = as[index];
         if (element.href.endsWith(".mp3")) {
-            songs.push(element.href.split(`/${folder}/`)[1])
+            songs.push(element.href.split(/${folder}/)[1])
         }
     }
  
@@ -38,7 +38,7 @@ async function getSongs(folder) {
     let songUL = document.querySelector(".songList").getElementsByTagName("ul")[0]
     songUL.innerHTML = ""
     for (const song of songs) {
-        songUL.innerHTML = songUL.innerHTML + `<li><img class="invert" width="34" src="img/music.svg" alt="">
+        songUL.innerHTML = songUL.innerHTML + <li><img class="invert" width="34" src="img/music.svg" alt="">
                             <div class="info">
                                 <div> ${song.replaceAll("%20", " ")}</div>
                                 <div>Harry</div>
@@ -46,7 +46,7 @@ async function getSongs(folder) {
                             <div class="playnow">
                                 <span>Play Now</span>
                                 <img class="invert" src="img/play.svg" alt="">
-                            </div> </li>`;
+                            </div> </li>;
     }
 
     // Attach an event listener to each song
@@ -61,23 +61,20 @@ async function getSongs(folder) {
 }
 
 const playMusic = (track, pause = false) => {
-    currentSong.src = `/${currFolder}/` + encodeURIComponent(track);
-          // Wait until metadata is loaded before updating duration
-    /*currentSong.addEventListener("loadedmetadata", () => {
-        document.querySelector(".songtime").innerHTML = `00:00 / ${secondsToMinutesSeconds(currentSong.duration)}`;
-    });*/
+    currentSong.src = /${currFolder}/ + track
     if (!pause) {
         currentSong.play()
         play.src = "img/pause.svg"
     }
     document.querySelector(".songinfo").innerHTML = decodeURI(track)
-    document.querySelector(".songtime").innerHTML = "00:00 / 00:00" 
+    document.querySelector(".songtime").innerHTML = "00:00 / 00:00"
+
 
 }
 
 async function displayAlbums() {
     console.log("displaying albums")
-    let a = await fetch(`/songs/`)
+    let a = await fetch(/songs/)
     let response = await a.text();
     let div = document.createElement("div")
     div.innerHTML = response;
@@ -89,9 +86,9 @@ async function displayAlbums() {
         if (e.href.includes("/songs") && !e.href.includes(".htaccess")) {
             let folder = e.href.split("/").slice(-2)[0]
             // Get the metadata of the folder
-            let a = await fetch(`/songs/${folder}/info.json`)
+            let a = await fetch(/songs/${folder}/info.json)
             let response = await a.json(); 
-            cardContainer.innerHTML = cardContainer.innerHTML + ` <div data-folder="${folder}" class="card">
+            cardContainer.innerHTML = cardContainer.innerHTML +  <div data-folder="${folder}" class="card">
             <div class="play">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
@@ -103,7 +100,7 @@ async function displayAlbums() {
             <img src="/songs/${folder}/cover.jpg" alt="">
             <h2>${response.title}</h2>
             <p>${response.description}</p>
-        </div>`
+        </div>
         }
     }
 
@@ -111,7 +108,7 @@ async function displayAlbums() {
     Array.from(document.getElementsByClassName("card")).forEach(e => { 
         e.addEventListener("click", async item => {
             console.log("Fetching Songs")
-            songs = await getSongs(`songs/${item.currentTarget.dataset.folder}`)  
+            songs = await getSongs(songs/${item.currentTarget.dataset.folder})  
             playMusic(songs[0])
 
         })
@@ -141,13 +138,12 @@ async function main() {
 
     // Listen for timeupdate event
     currentSong.addEventListener("timeupdate", () => {
-        document.querySelector(".songtime").innerHTML = `${secondsToMinutesSeconds(currentSong.currentTime)} / ${secondsToMinutesSeconds(currentSong.duration)}`
+        document.querySelector(".songtime").innerHTML = ${secondsToMinutesSeconds(currentSong.currentTime)} / ${secondsToMinutesSeconds(currentSong.duration)}
         document.querySelector(".circle").style.left = (currentSong.currentTime / currentSong.duration) * 100 + "%";
     })
 
     // Add an event listener to seekbar
     document.querySelector(".seekbar").addEventListener("click", e => {
-        if (isNaN(currentSong.duration)) return; 
         let percent = (e.offsetX / e.target.getBoundingClientRect().width) * 100;
         document.querySelector(".circle").style.left = percent + "%";
         currentSong.currentTime = ((currentSong.duration) * percent) / 100
@@ -205,6 +201,13 @@ async function main() {
             currentSong.volume = .10;
             document.querySelector(".range").getElementsByTagName("input")[0].value = 10;
         }
+
     })
+
+
+
+
+
 }
+
 main() 
