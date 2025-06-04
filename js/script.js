@@ -62,18 +62,16 @@ async function getSongs(folder) {
 
 const playMusic = (track, pause = false) => {
     currentSong.src = `/${currFolder}/` + encodeURIComponent(track);
-    
-    document.querySelector(".songinfo").innerHTML = decodeURI(track)
-    document.querySelector(".songtime").innerHTML = "00:00 / 00:00"
-      // Wait until metadata is loaded before updating duration
-    currentSong.addEventListener("loadedmetadata", () => {
+          // Wait until metadata is loaded before updating duration
+    /*currentSong.addEventListener("loadedmetadata", () => {
         document.querySelector(".songtime").innerHTML = `00:00 / ${secondsToMinutesSeconds(currentSong.duration)}`;
-    });
+    });*/
     if (!pause) {
         currentSong.play()
         play.src = "img/pause.svg"
     }
-    
+    document.querySelector(".songinfo").innerHTML = decodeURI(track)
+    document.querySelector(".songtime").innerHTML = "00:00 / 00:00" 
 
 }
 
