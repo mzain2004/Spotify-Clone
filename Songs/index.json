@@ -1,12 +1,7 @@
 [
   {
     "folder": "ncs",
-    "title": "NCS Playlist",
-    "description": "Best NoCopyrightSounds tracks"
-  },
-  {
-    "folder": "lofi",
-    "title": "Lo-Fi Vibes",
-    "description": "Chill and study beats"
+    "title": "ncs",
+    "description": "Best of NCS"
   }
 ]
